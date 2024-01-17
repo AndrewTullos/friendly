@@ -10,6 +10,7 @@ const {
 	deleteReaction,
 } = require("../../controllers/postController");
 
+// Get all thoughts and create thought
 // /api/thoughts
 router.route("/").get(getThought).post(createThought);
 

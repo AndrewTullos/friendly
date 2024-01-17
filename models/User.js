@@ -1,6 +1,6 @@
 const { Schema, model, Types } = require("mongoose");
 
-const userSchema = new Schema(
+const UserSchema = new Schema(
 	{
 		username: {
 			type: String,
@@ -14,10 +14,6 @@ const userSchema = new Schema(
 			unique: true,
 			trim: true,
 			lowercase: true,
-			validate: {
-				validator: () => Promise.resolve(false),
-				message: "Email validation failed",
-			},
 			// REGEX Match
 			match: [
 				/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
@@ -44,10 +40,16 @@ const userSchema = new Schema(
 		id: false,
 	}
 );
+// Middleware to delete user's thoughts when user is deleted
+UserSchema.pre("findOneAndDelete", async function (next) {
+	const userId = this.getQuery()["_id"];
+	await Thought.deleteMany({ userId: userId });
+	next();
+});
 
-userSchema.virtual("friendCount").get(function () {
+UserSchema.virtual("friendCount").get(function () {
 	return this.friends.length;
 });
-const User = model("User", userSchema);
+const User = model("User", UserSchema);
 
 module.exports = User;
