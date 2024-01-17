@@ -21,12 +21,15 @@ module.exports = {
 	},
 
 	createUser(req, res) {
-		User.create(req.body)
+		User.findOne({ username: req.body.username })
+			.then((existingUser) => {
+				if (existingUser) {
+					return res.status(400).json({ message: "Username already taken." });
+				}
+				return User.create(req.body);
+			})
 			.then((user) => res.json(user))
-			.catch((err) => {
-				console.log(err);
-				return res.status(500).json(err);
-			});
+			.catch((err) => res.status(500).json(err));
 	},
 
 	updateUser(req, res) {
@@ -45,13 +48,22 @@ module.exports = {
 
 	deleteUser(req, res) {
 		User.findOneAndDelete({ _id: req.params.userId })
-			.then((user) =>
-				!user
-					? res.status(404).json({ message: "No User found with this ID!" })
-					: Thought.deleteMany({ _id: { $in: user.thoughts } })
-			)
-			.then(() => res.json({ message: "User and User's Thoughts deleted!" }))
-			.catch((err) => res.status(500).json(err));
+			.then((user) => {
+				if (!user) {
+					return res
+						.status(404)
+						.json({ message: "No User found with this ID!" });
+				}
+				return Thought.deleteMany({ _id: { $in: user.thoughts } }).then(() =>
+					res.json({ message: "User and User's Thoughts deleted!" })
+				);
+			})
+			.catch((err) => {
+				console.error("Error in deleteUser:", err); // Log the error to the console
+				res
+					.status(500)
+					.json({ message: "Internal Server Error", error: err.message });
+			});
 	},
 
 	addFriend(req, res) {

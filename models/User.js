@@ -41,11 +41,11 @@ const UserSchema = new Schema(
 	}
 );
 // Middleware to delete user's thoughts when user is deleted
-UserSchema.pre("findOneAndDelete", async function (next) {
-	const userId = this.getQuery()["_id"];
-	await Thought.deleteMany({ userId: userId });
-	next();
-});
+// UserSchema.pre("findOneAndDelete", async function (next) {
+// 	const userId = this.getQuery()["_id"];
+// 	await Thought.deleteMany({ userId: userId });
+// 	next();
+// });
 
 UserSchema.virtual("friendCount").get(function () {
 	return this.friends.length;
