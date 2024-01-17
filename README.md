@@ -14,14 +14,9 @@ Friendly offers a variety of API routes to handle different functionalities requ
 
 ## Table of Contents
 
-- [Projects](#projects)
 - [Technologies](#technologies)
 - [Usage](#usage)
 - [Contact](#contact)
-
-## Projects
-
-This section showcases a variety of projects I have worked on, demonstrating my versatility and expertise in software development. Each project is detailed with its objectives, technologies used, and my role in its development.
 
 ## Technologies
 
@@ -38,7 +33,7 @@ Guidelines on how to use the API routes, including example requests and expected
 
 ## Contact
 
-Details on how to get in touch with me, including social media links, email, and a contact form for direct inquiries.
+[Github Profile Follow](https://github.com/AndrewTullos)
 
 ## License
 
